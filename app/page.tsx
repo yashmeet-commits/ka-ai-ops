@@ -17,6 +17,7 @@ import {
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -247,20 +248,21 @@ async function deleteExamUpdate(id: number) {
 }
   useEffect(() => {
 
-  async function checkUser() {
+  async function checkSession() {
 
     const {
-      data: { user },
-    } = await supabase.auth.getUser();
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (!user) {
+    if (!session) {
       router.push("/login");
-    } else {
-      fetchData();
+      return;
     }
+
+    fetchData();
   }
 
-  checkUser();
+  checkSession();
 
 }, []);
 
